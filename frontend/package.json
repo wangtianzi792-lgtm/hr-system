@@ -1,0 +1,29 @@
+{
+  "name": "attendance-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@element-plus/icons-vue": "^2.1.0",
+    "axios": "^1.6.2",
+    "dayjs": "^1.11.10",
+    "echarts": "^5.4.3",
+    "element-plus": "^2.4.4",
+    "pinia": "^2.1.7",
+    "vue": "^3.3.8",
+    "vue-echarts": "^6.6.1",
+    "vue-router": "^4.2.5"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-eslint": "^5.0.8",
+    "@vue/cli-service": "^5.0.8",
+    "eslint": "^8.54.0",
+    "eslint-plugin-vue": "^9.18.1",
+    "sass": "^1.99.0",
+    "sass-loader": "^13.3.3"
+  }
+}

@@ -1,0 +1,10 @@
+import sqlite3
+conn = sqlite3.connect('attendance.db')
+cur = conn.cursor()
+cur.execute("SELECT name FROM sqlite_master WHERE type='table'")
+print("Tables:", [r[0] for r in cur.fetchall()])
+cur.execute("SELECT id, name FROM departments")
+print("Depts:", cur.fetchall())
+cur.execute("SELECT id, name, employee_no FROM employees")
+print("Emps:", cur.fetchall())
+conn.close()

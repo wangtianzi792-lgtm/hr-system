@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkattendance_frontend"]=self["webpackChunkattendance_frontend"]||[]).push([[411],{1411(e,n,t){t.r(n),t.d(n,{default:()=>c});var a=t(641);const d={style:{padding:"40px","text-align":"center",color:"#999"}},r={__name:"index",setup(e){return(e,n)=>((0,a.uX)(),(0,a.CE)("div",d,[...n[0]||(n[0]=[(0,a.Lk)("p",null,"请从左侧菜单选择功能：班次配置 / 员工排班",-1)])]))}},u=r,c=u}}]);
+//# sourceMappingURL=411.0678df76.js.map
