@@ -61,8 +61,8 @@
       </div>
       <el-form :model="form" label-width="110px">
         <el-form-item label="选择员工" required>
-          <el-select v-model="form.employee_no" placeholder="搜索员工" filterable style="width:100%" :disabled="!!lookupKey">
-            <el-option v-for="e in employees" :key="e.工号" :label="`${e.姓名}（${e.工号}）`" :value="e.工号" />
+          <el-select v-model="form.employee_no" placeholder="选择员工" style="width:100%" :disabled="!!lookupKey">
+            <el-option v-for="e in employees" :key="e.工号" :label="e.姓名 + '（' + e.工号 + '）'" :value="e.工号" />
           </el-select>
         </el-form-item>
         <el-form-item label="原班次日期" required>
@@ -102,52 +102,69 @@ const form = ref({ employee_no: '', original_date: '', original_time: '', new_da
 const lookupKey = ref('')
 const lookingUp = ref(false)
 const lookupHint = ref('')
-
 const loadAdjustments = async () => {
-  const res = await get('/api/work-hours/adjustments')
+  const res = await get('/work-hours/adjustments')
   adjustments.value = res.items || []
 }
 
 const loadEmployees = async () => {
-  const res = await get('/api/roster/?status=all&limit=1000')
-  employees.value = res.items || []
+  try {
+    const res = await get('/roster/?status=all&limit=1000')
+    employees.value = res.items || []
+    console.log('[loadEmployees] loaded:', employees.value.length)
+  } catch (e) {
+    console.error('[loadEmployees] failed:', e)
+    employees.value = []
+  }
 }
 
-const openDialog = () => {
+const openDialog = async () => {
   lookupKey.value = ''; lookupHint.value = ''
   form.value = { employee_no: '', original_date: '', original_time: '', new_date: '', new_time: '', reason: '' }
   dialogVisible.value = true
+  if (employees.value.length === 0) await loadEmployees()
 }
 
 const doLookup = async () => {
   if (!lookupKey.value.trim()) { lookupHint.value = '请输入工号或姓名'; return }
   lookingUp.value = true; lookupHint.value = ''
   try {
+    console.log('[lookup] employees count:', employees.value.length)
+    if (employees.value.length === 0) {
+      console.log('[lookup] loading employees...')
+      await loadEmployees()
+      console.log('[lookup] employees loaded:', employees.value.length)
+    }
     const res = await lookupRoster(lookupKey.value.trim())
+    console.log('[lookup] roster result:', res)
     if (!res) { lookupHint.value = '花名册中未找到此人'; return }
     lookupHint.value = `✓ 已找到：${res.姓名}（${res.工号}）-${res.部门}-${res.岗位 || '无岗位'}`
     form.value.employee_no = res.工号 || ''
-  } catch (e) { lookupHint.value = '查找失败，请重试' } finally { lookingUp.value = false }
+    lookupKey.value = ''  // 清空后select可显示并可编辑
+  } catch (e) {
+    console.error('[lookup] error:', e)
+    lookupHint.value = '查找失败，请重试'
+  } finally { lookingUp.value = false }
 }
 
 const save = async () => {
   if (!form.value.employee_no) { ElMessage.warning('请选择员工'); return }
   if (!form.value.original_date) { ElMessage.warning('请填写原班次日期'); return }
   if (!form.value.new_date) { ElMessage.warning('请填写调休后日期'); return }
-  await post('/api/work-hours/adjustments', form.value)
+  await post('/work-hours/adjustments', form.value)
   ElMessage.success('调休记录已提交')
   dialogVisible.value = false
   loadAdjustments()
 }
 
 const approve = async (id) => {
-  await put(`/api/work-hours/adjustments/${id}/approve`)
+  await put(`/work-hours/adjustments/${id}/approve`)
   ElMessage.success('已通过')
   loadAdjustments()
 }
 
 const reject = async (id) => {
-  await put(`/api/work-hours/adjustments/${id}/reject`)
+  await put(`/work-hours/adjustments/${id}/reject`)
   ElMessage.success('已驳回')
   loadAdjustments()
 }

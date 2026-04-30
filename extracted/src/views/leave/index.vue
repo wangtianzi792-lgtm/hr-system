@@ -236,11 +236,14 @@ const doLookup = async () => {
   if (!lookupKey.value.trim()) { lookupHint.value = '请输入工号或姓名'; return }
   lookingUp.value = true; lookupHint.value = ''
   try {
+    if (employeeList.value.length === 0) await fetchEmployees()
     const res = await lookupRoster(lookupKey.value.trim())
     if (!res) { lookupHint.value = '花名册中未找到此人'; return }
     lookupHint.value = `✓ 已找到：${res.姓名}（${res.工号}）-${res.部门}-${res.岗位 || '无岗位'}`
     // 根据工号匹配 employee_id
-    const emp = employeeList.value.find(e => e.工号 === res.工号)
+    const emp = employeeList.value.find(e =>
+      e.employee_no === res.工号 || e.name === res.姓名 || e.姓名 === res.姓名
+    )
     if (emp) {
       form.employee_id = emp.id
     } else {

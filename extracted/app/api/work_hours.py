@@ -4,7 +4,7 @@ from typing import Optional
 import sqlite3
 from datetime import datetime, date
 
-router = APIRouter(prefix="/api/work-hours", tags=["工时管理"])
+router = APIRouter(prefix="/work-hours", tags=["工时管理"])
 
 def get_conn():
     conn = sqlite3.connect("attendance.db")
