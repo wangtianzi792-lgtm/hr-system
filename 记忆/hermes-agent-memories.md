@@ -5,13 +5,11 @@
 
 ---
 
-## 1. 项目要求
+## 1. 主项目
 
-以后所有开发都在 `/Users/jiuhua/HR系统` 这个项目上进行，不再新建其他项目。
+主项目：`/Users/jiuhua/deepseek创建HR系统/`。旧项目 `/Users/jiuhua/HR系统/` 已废弃。
 
-已卸载 Docker Desktop、删除 docker-compose.yml，系统现在完全独立运行（Python uvicorn + SQLite）。
-
-部署文档已写好：`/Users/jiuhua/HR系统/DEPLOY_SERVER.md`
+系统独立运行（Python uvicorn + SQLite），不依赖Docker。
 
 ---
 
@@ -129,9 +127,9 @@
 
 ---
 
-## 10. 系统风险备忘（2026-05-10梳理）
+## 10. 系统风险备忘（2026-05-10）
 
-1. **两套项目目录并存**：v2在 `/Users/jiuhua/deepseek创建HR系统/`，旧版在 `/Users/jiuhua/HR系统/extracted/`，易混淆启动路径
+1. **旧项目已废弃**：`/Users/jiuhua/HR系统/` 不再使用，主项目统一在 `/Users/jiuhua/deepseek创建HR系统/`
 2. **SQLite无备份**：绝对路径写死，建议定时cp到NAS `/Volumes/Hr 行政人事/`
 3. **ZK同步无定时**：无cron/launchd，需手动触发
 4. **网络冲突**：iPhone热点 172.20.10/24 与 SSL VPN池 172.20.20/24 冲突，目前用WiFi绕过
